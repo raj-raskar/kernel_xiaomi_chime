@@ -151,3 +151,8 @@ clang/
 gcc/
 gcc32/
 local.config
+
+#
+#Ignoring Android.bp link file
+#
+Android.bp

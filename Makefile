@@ -661,7 +661,9 @@ ifdef CONFIG_LTO_CLANG
 LLVM_AR		:= llvm-ar
 LLVM_NM		:= llvm-nm
 export LLVM_AR LLVM_NM
-# Set O3 optimization level for LTO
+# Set O3 optimization level for LTO with most linkers
+LDFLAGS 	+= -O3
+LDFLAGS 	+= --plugin-opt=-import-instr-limit=40
 LDFLAGS		+= --plugin-opt=O3
 endif
 
@@ -707,6 +709,10 @@ include/config/auto.conf:
 
 endif # may-sync-config
 endif # $(dot-config)
+
+ifdef CONFIG_LTO_CLANG
+KBUILD_CFLAG	+= -fwhole-program-vtables
+endif
 
 ifdef CONFIG_LLVM_POLLY
 ifeq ($(cc-name),clang)

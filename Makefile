@@ -721,18 +721,16 @@ ifeq ($(cc-name),clang)
 KBUILD_CFLAGS	+= -mllvm -polly \
 		   -mllvm -polly-run-dce \
 		   -mllvm -polly-run-inliner \
-		   -mllvm -polly-reschedule=1 \
 		   -mllvm -polly-loopfusion-greedy=1 \
-		   -mllvm -polly-postopts=1 \
+		   -mllvm -polly-parallel \
 		   -mllvm -polly-ast-use-context \
-		   -mllvm -polly-loopfusion-greedy=1 \
-		   -mllvm -polly-postopts=1 \
+		   -mllvm -polly-invariant-load-hoisting \
 		   -mllvm -polly-reschedule=1 \
-		   -mllvm -polly-detect-keep-going \
-		   -mllvm -polly-position=before-vectorizer \
-		   -mllvm -polly-vectorizer=stripmine \
-		   -mllvm -polly-detect-profitability-min-per-loop-insts=40 \
-		   -mllvm -polly-invariant-load-hoisting
+		   -mllvm -polly-postopts=1 \
+		   -mllvm -polly-omp-backend=LLVM \
+		   -mllvm -polly-scheduling=dynamic \
+		   -mllvm -polly-scheduling-chunksize=1 \
+		   -mllvm -polly-vectorizer=stripmine
 else
 KBUILD_CFLAGS	+=
 endif

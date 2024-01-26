@@ -718,11 +718,11 @@ ifdef CONFIG_LLVM_POLLY
 ifeq ($(cc-name),clang)
 KBUILD_CFLAGS	+= -mllvm -polly \
 		   -mllvm -polly-run-dce \
-		   -mllvm -polly-run-inliner \
-		   -mllvm -polly-loopfusion-greedy=1 \
 		   -mllvm -polly-parallel \
 		   -mllvm -polly-ast-use-context \
 		   -mllvm -polly-invariant-load-hoisting \
+		   -mllvm -polly-run-inliner \
+		   -mllvm -polly-loopfusion-greedy=1 \
 		   -mllvm -polly-reschedule=1 \
 		   -mllvm -polly-postopts=1 \
 		   -mllvm -polly-omp-backend=LLVM \
@@ -930,6 +930,7 @@ endif
 ifdef CONFIG_LD_DEAD_CODE_DATA_ELIMINATION
 KBUILD_CFLAGS_KERNEL += -ffunction-sections -fdata-sections
 LDFLAGS_vmlinux += --gc-sections
+KBUILD_CFLAGS   += -mllvm -polly-run-dce
 endif
 
 ifdef CONFIG_LTO_CLANG

@@ -734,6 +734,9 @@ KBUILD_CFLAGS	+=
 endif
 endif
 
+# FP Contraction Optimizatiom
+KBUILD_CFLAGS	+= -ffp-contract=fast
+
 # Enable Hot/Cold Split Optimization
 KBUILD_CFLAGS   += -mllvm -hot-cold-split=true
 

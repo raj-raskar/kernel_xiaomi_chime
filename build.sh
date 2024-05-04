@@ -7,9 +7,9 @@ set -e
 # Patch for 4.14
 sed -i 's/#ifdef CONFIG_KPROBES/#if 0/g' KernelSU/kernel/ksu.c
 
-export KBUILD_BUILD_USER=Ash
-export KBUILD_BUILD_HOST=GrassLand
-
+export KBUILD_BUILD_USER=ash
+export KBUILD_BUILD_HOST=Nahida
+export ARCH=arm64
 PATH=$PWD/toolchain/bin:$PATH
 
 rm -rf out

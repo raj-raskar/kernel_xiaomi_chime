@@ -452,7 +452,7 @@ ifeq ($(cc-name),gcc)
 KBUILD_CFLAGS += -mcpu=cortex-a73.cortex-a53 -mtune=cortex-a73.cortex-a53
 KBUILD_AFLAGS += -mcpu=cortex-a73.cortex-a53 -mtune=cortex-a73.cortex-a53
 else ifeq ($(cc-name),clang)
-OPT_FLAGS := -march=armv8.2-a+crypto+crc+nodotprod
+OPT_FLAGS := -march=armv8.2-a+crypto+crc+nodotprod+lse+fp16
 OPT_FLAGS += -mtune=cortex-a73
 KBUILD_CFLAGS += $(OPT_FLAGS)
 KBUILD_AFLAGS += $(OPT_FLAGS)
@@ -535,7 +535,6 @@ endif
 CLANG_FLAGS	+= $(call cc-option, -Wno-misleading-indentation)
 CLANG_FLAGS	+= $(call cc-option, -Wno-bool-operation)
 CLANG_FLAGS	+= -Werror=unknown-warning-option
-CLANG_FLAGS	+= $(call cc-option, -Wno-unused-but-set-variable)
 CLANG_FLAGS	+= $(call cc-option, -Wno-unsequenced)
 KBUILD_CFLAGS	+= $(CLANG_FLAGS)
 KBUILD_AFLAGS	+= $(CLANG_FLAGS)
@@ -639,7 +638,6 @@ endif
 # This allow a user to issue only 'make' to build a kernel including modules
 # Defaults to vmlinux, but the arch makefile usually adds further targets
 all: vmlinux
-	@(bash -C $(srctree)/scripts/post-build-hook.sh)
 
 CFLAGS_GCOV	:= -fprofile-arcs -ftest-coverage \
 	$(call cc-option,-fno-tree-loop-im) \
@@ -713,19 +711,24 @@ endif # $(dot-config)
 
 ifdef CONFIG_LLVM_POLLY
 ifeq ($(cc-name),clang)
-KBUILD_CFLAGS	+= -mllvm -polly \
-		   -mllvm -polly-run-dce \
-		   -mllvm -polly-parallel \
-		   -mllvm -polly-ast-use-context \
-		   -mllvm -polly-invariant-load-hoisting \
-		   -mllvm -polly-run-inliner \
-		   -mllvm -polly-loopfusion-greedy=1 \
-		   -mllvm -polly-reschedule=1 \
-		   -mllvm -polly-postopts=1 \
-		   -mllvm -polly-omp-backend=LLVM \
-		   -mllvm -polly-scheduling=dynamic \
-		   -mllvm -polly-scheduling-chunksize=1 \
-		   -mllvm -polly-vectorizer=stripmine
+KBUILD_CFLAGS   += -mllvm -polly \
+                    -mllvm -polly-parallel \
+                    -mllvm -polly-ast-use-context \
+                    -mllvm -polly-invariant-load-hoisting \
+                    -mllvm -polly-run-inliner \
+                    -mllvm -polly-loopfusion-greedy \
+                    -mllvm -polly-reschedule \
+                    -mllvm -polly-postopts \
+                    -mllvm -polly-omp-backend=LLVM \
+                    -mllvm -polly-scheduling=dynamic \
+                    -mllvm -polly-scheduling-chunksize=1 \
+                    -mllvm -polly-vectorizer=stripmine \
+                    -mllvm -polly-dependences-analysis-type=value-based \
+                    -mllvm -polly-dependences-computeout=0 \
+                    -mllvm -polly-enable-delicm \
+                    -mllvm -polly-num-threads=0 \
+                    -mllvm -polly-optimizer=isl \
+                    -mllvm -polly-tiling
 else
 KBUILD_CFLAGS	+=
 endif

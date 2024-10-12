@@ -1,6 +1,9 @@
 #!/bin/bash
 # script that is called after the build
 
+# don't need
+exit 0
+
 set -e
 
 # Telegram functions. Requires CHAT_ID and BOT_TOKEN

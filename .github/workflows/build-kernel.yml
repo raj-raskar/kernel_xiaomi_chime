@@ -29,11 +29,11 @@ jobs:
     - name: Download Neutron Toolchain
       run: bash hani-ci.sh --tools
 
-    - name: Build hanikrnl.
+    - name: Build kernel.
       run: bash hani-ci.sh --build
 
     - name: Upload kernel
       uses: actions/upload-artifact@v4
       with:
-        name: hanikrnl
-        path: 4.19-hanikrnl.*-chime*.zip
+        name: honey
+        path: 4.19-chime.ksu-*.zip
